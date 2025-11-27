@@ -16,7 +16,7 @@ const Footer = () => {
           {/* Left - Brand / Logo */}
           <div className="flex flex-col space-y-2 md:items-start items-center">
             <div className="text-3xl font-extrabold text-teal-400">
-                ClockApp
+                Zentra
             </div>
             <p className="text-sm text-gray-500">
                 Your world, synchronized.
@@ -44,10 +44,10 @@ const Footer = () => {
               </li>
               <li>
                 <Link 
-                  to="#" 
+                  to="/world-clocks" 
                   className="hover:text-blue-400 transition duration-300 block text-center md:text-left"
                 >
-                  Contact
+                  World Clocks
                 </Link>
               </li>
             </ul>

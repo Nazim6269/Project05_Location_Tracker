@@ -1,9 +1,12 @@
+import "leaflet/dist/leaflet.css";
 import { BrowserRouter, Route, Routes } from "react-router";
 import "./App.css";
-import CustomeClock from "./Components/CustomClock";
 import Footer from "./Components/navbar/Footer";
 import Navbar from "./Components/navbar/Navbar";
-import WorldClocks from "./Components/WroldClocks";
+import CustomeClock from "./screens/CustomClock";
+import Home from "./screens/Home";
+import WorldClocks from "./screens/WroldClocks";
+
 
 function App() {
   const darkMode = true
@@ -15,9 +18,10 @@ function App() {
 >
       {/* Navbar */}
       <Navbar darkMode={darkMode} />
-<Routes>
-  <Route index element={<WorldClocks />} />
+         <Routes>
+  <Route index element={<Home />} />
 <Route path="/my-clock" element={ <CustomeClock />} />
+<Route path="/world-clocks" element={ <WorldClocks />} />
      
 </Routes>
       

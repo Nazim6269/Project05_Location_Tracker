@@ -19,17 +19,17 @@ const Navbar = ({ darkMode=true }) => {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <h1 className="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-teal-400">
-            ClockApp
+          <NavLink to={'/'}>Zentra</NavLink>  
           </h1>
 
           {/* Desktop Menu */}
           <ul className="hidden md:flex space-x-8 text-lg font-medium">
             <li>
               <NavLink 
-                to="/" 
+                to="/world-clocks" 
                 className={`${textColor} hover:text-teal-400 transition duration-300`}
               >
-                Home
+                World Clocks
               </NavLink>
             </li>
             <li>
@@ -41,12 +41,7 @@ const Navbar = ({ darkMode=true }) => {
               </NavLink>
             </li>
             <li>
-              <NavLink 
-                to="/contact" 
-                className={`${textColor} hover:text-teal-400 transition duration-300`}
-              >
-                Contact
-              </NavLink>
+              
             </li>
           </ul>
 

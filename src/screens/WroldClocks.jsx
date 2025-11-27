@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import { initialClocks } from "../../data";
-import AddNew from "./AddNew";
-import WeatherInfo from "./WeatherInfo";
-
+import AddNew from "../Components/AddNew";
+import WeatherInfo from "../Components/WeatherInfo";
 
 
 const WorldClocks = () => {
@@ -94,6 +93,7 @@ const WorldClocks = () => {
     <WeatherInfo city="India" />
     <WeatherInfo city="Pakistan" />
    </div>
+
   </div> 
   
 </div>

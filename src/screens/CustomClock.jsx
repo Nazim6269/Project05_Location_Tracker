@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { generate } from "shortid";
-import ClockList from "./clockList/ClockList";
-import LocalClock from "./localClock/LocalClock";
+import ClockList from "../Components/clockList/ClockList";
+import LocalClock from "../Components/localClock/LocalClock";
 
 const LOCAL_CLOCK_INIT = {
   title: "My clock",
