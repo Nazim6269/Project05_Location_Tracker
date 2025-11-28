@@ -1,19 +1,23 @@
 import PropTypes from "prop-types";
 import { useEffect } from "react";
 import useClock from "../../hooks/useClock";
+import { useTheme } from "../../hooks/useTheme";
 import useTimer from "../../hooks/useTimer";
 import ClockActions from "../shared/clock-actions/ClockActions";
 import ClockDisplay from "../shared/clock-display/ClockDisplay";
 
 /**
- * this component represent the local clock
- * @param {Object} props - prps object
- * @param {Object} props.clock - new created clock object
- * @param {Function} props.updateLocalClock - updateLocalClock function update the clock time
- * @param {Function} props.createNewCloc - createNewClock function create new clock
- * @returns {JSX.Element} - return the localClock component
+ * LocalClock component
+ * @param {Object} props
+ * @param {Object} props.clock
+ * @param {Function} props.updateLocalClock
+ * @param {Function} props.createNewClock
+ * @returns JSX.Element
  */
 const LocalClock = ({ clock, updateLocalClock, createNewClock }) => {
+  const { theme } = useTheme();
+  const isDark = theme === "dark";
+
   const { date, timezone, offset } = useClock(clock.timezone, clock.offset);
   const timer = useTimer(date);
 
@@ -22,19 +26,20 @@ const LocalClock = ({ clock, updateLocalClock, createNewClock }) => {
   }, [date]);
 
   return (
-    <div 
-  
-  className="
-    bg-white dark:bg-gray-800 
-    flex-1 
-    border border-gray-300 dark:border-gray-700 
-    rounded-2xl 
-    shadow-xl dark:shadow-2xl dark:shadow-black/60 
-    p-7 
-    transition-all duration-300
-    hover:shadow-2xl dark:hover:shadow-3xl
-  "
->
+    <div
+      className={`
+        flex-1 
+        rounded-2xl 
+        p-7 
+        border transition-colors duration-300
+        shadow-xl hover:shadow-2xl
+        ${
+          isDark
+            ? "bg-gray-800 border-gray-700 shadow-2xl shadow-black/60 hover:shadow-3xl"
+            : "bg-gray-50 border-gray-200 shadow-lg hover:shadow-xl"
+        }
+      `}
+    >
       {timer && (
         <ClockDisplay
           date={timer}
@@ -43,7 +48,11 @@ const LocalClock = ({ clock, updateLocalClock, createNewClock }) => {
           title={clock.title}
         />
       )}
-      <div className="mt-6 border-t border-gray-200 dark:border-gray-700 pt-4"> 
+      <div
+        className={`mt-6 border-t pt-4 ${
+          isDark ? "border-gray-700" : "border-gray-200"
+        }`}
+      >
         <ClockActions
           local={true}
           clock={clock}
@@ -55,7 +64,7 @@ const LocalClock = ({ clock, updateLocalClock, createNewClock }) => {
   );
 };
 
-//defing prop types below
+// PropTypes
 LocalClock.propTypes = {
   clock: PropTypes.shape({
     date: PropTypes.objectOf(PropTypes.object),

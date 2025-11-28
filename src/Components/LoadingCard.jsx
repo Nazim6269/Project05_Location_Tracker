@@ -1,8 +1,17 @@
+import { useTheme } from "../hooks/useTheme";
 
 const LoadingCard = () => {
-  return (
-        <div className="w-full max-w-sm h-80 rounded-3xl bg-gray-300 dark:bg-gray-700 animate-pulse"></div>
-  )
-}
+  const { theme } = useTheme();
 
-export default LoadingCard
+  return (
+    <div
+      className={`
+        w-full max-w-sm h-80 rounded-3xl animate-pulse
+        ${theme === "dark" ? "bg-gray-800" : "bg-gray-100"}
+        shadow-xl ${theme === "dark" ? "shadow-black/40" : "shadow-gray-300"}
+      `}
+    ></div>
+  );
+};
+
+export default LoadingCard;

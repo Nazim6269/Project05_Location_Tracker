@@ -1,48 +1,80 @@
 import { format } from "date-fns";
 import PropTypes from "prop-types";
-
-/**
- * ClockDisplay component displays a clock with given date, timezone, offset, and title.
- * @param {Object} props - The props object containing date, timezone, offset, and title.
- * @param {Date} props.date - The date object representing the current date and time.
- * @param {string} props.timezone - The timezone string representing the timezone of the clock.
- * @param {number} props.offset - The offset representing the time difference from UTC in minutes.
- * @param {string} props.title - The title of the clock.
- * @returns {JSX.Element} A JSX element representing the ClockDisplay component.
- */
+import { useTheme } from "../../../hooks/useTheme";
 
 const ClockDisplay = ({ date, timezone, offset, title }) => {
-  let offsetHr = offset / 60;
+  const { theme } = useTheme();
+  const isDark = theme === "dark";
+  const offsetHr = offset / 60;
+
   return (
-    <div 
-  className="
-    bg-white dark:bg-gray-900 
-    rounded-lg 
-    p-4 md:p-6 
-    max-w-full mx-auto 
-    space-y-1 
-    transition-colors duration-300
-  "
->
-      {/* Title */}
-      <h1 className="text-2xl md:text-3xl font-bold mb-1 
-                     text-gray-800 dark:text-white">
+    <div
+      className={`
+    rounded-2xl
+    p-5 md:p-6
+    max-w-full mx-auto
+    backdrop-blur-xl backdrop-saturate-150
+    transition-all duration-300
+    shadow-lg
+    ${
+      isDark
+        ? "bg-white/10 border border-white/15"
+        : "bg-white/70 border border-white/40"
+    }
+  `}
+    >
+      {/* Header */}
+      <div className="flex items-center justify-between mb-3">
+        <h1
+          className={`text-xl md:text-2xl font-semibold tracking-wide
+      ${isDark ? "text-white" : "text-lightPrimaryTextColor"}`}
+        >
           {title}
-      </h1>
+        </h1>
 
-      {/* Formatted Time/Date */}
-      <h2 className="text-3xl md:text-4xl font-mono font-medium text-blue-600 dark:text-teal-400">
-        {/* Assuming 'format' function is provided externally and formats time correctly */}
-        {format(date, "yyy-MM-dd hh:mm:ss aaaa")}
-      </h2>
+        <span
+          className={`text-xs px-3 py-1 rounded-full uppercase tracking-widest
+      ${isDark ? "bg-white/10 text-gray-300" : "bg-white/60 text-gray-700"}`}
+        >
+          {timezone}
+        </span>
+      </div>
 
-      {/* Timezone and Offset */}
-      <h3 className="text-sm md:text-base text-gray-500 dark:text-gray-400 pt-1">
-        <span className="font-semibold text-gray-600 dark:text-gray-300">{timezone}</span>
-        {' '}
-        {/* Adjusting the offset display */}
-        (<span className="font-mono">{offsetHr >= 0 ? `GMT+${Math.abs(offsetHr)}` : `GMT-${Math.abs(offsetHr)}`}</span>)
-      </h3>
+      {/* Time */}
+      <div className="mb-3">
+        <h4
+          className={`text-xl md:text-3xl font-bold tracking-tight
+      ${isDark ? "text-darkTextColor" : "text-lightTextColor"}`}
+        >
+          {format(date, "hh:mm:ss a")}
+        </h4>
+
+        <p
+          className={`text-sm mt-1 tracking-wide
+      ${isDark ? "text-gray-400" : "text-gray-600"}`}
+        >
+          {format(date, "yyyy-MM-dd")}
+        </p>
+      </div>
+
+      {/* Bottom Row */}
+      <div className="flex items-center justify-between">
+        <span
+          className={`text-xs tracking-wider
+      ${isDark ? "text-gray-400" : "text-gray-600"}`}
+        >
+          GMT OFFSET
+        </span>
+
+        <span
+          className={`text-sm font-semibold px-3 py-1 rounded-lg
+      ${isDark ? "bg-white/10 text-white" : "bg-white/50 text-gray-800"}`}
+        >
+          {offsetHr >= 0
+            ? `GMT+${Math.abs(offsetHr)}`
+            : `GMT-${Math.abs(offsetHr)}`}
+        </span>
+      </div>
     </div>
   );
 };

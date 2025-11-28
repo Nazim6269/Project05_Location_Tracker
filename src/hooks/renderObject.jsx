@@ -1,28 +1,43 @@
-
-const renderObject = (obj) => {
-  return Object.entries(obj).map(([key, value]) => {
+const renderObject = (obj, isDark) => {
+  return Object.entries(obj || {}).map(([key, value]) => {
     if (value === null || value === undefined || value === "") return null;
 
-    // If nested object → render heading + children
+    // NESTED OBJECT
     if (typeof value === "object" && !Array.isArray(value)) {
       return (
         <div key={key} className="mt-4">
-          <h4 className="text-xs uppercase tracking-widest text-gray-500 mb-2">
+          <h4
+            className={`text-xs uppercase tracking-widest mb-2
+              ${isDark ? "text-gray-400" : "text-gray-500"}
+            `}
+          >
             {key}
           </h4>
 
-          <div className="space-y-2 pl-2">{renderObject(value)}</div>
+          <div className="space-y-2 pl-2">{renderObject(value, isDark)}</div>
         </div>
       );
     }
 
-    // Render normal field
-   return <div key={key} className="flex justify-between">
-      <span className="capitalize opacity-70">{key.replace(/_/g, " ")}</span>
-      <span className="font-mono text-teal-400 font-semibold">{String(value)}</span>
-    </div>
-     
+    // NORMAL FIELD
+    return (
+      <div key={key} className="flex justify-between">
+        <span
+          className={`capitalize ${isDark ? "text-gray-300" : "text-gray-700"}`}
+        >
+          {key.replace(/_/g, " ")}
+        </span>
+
+        <span
+          className={`font-mono font-semibold
+            ${isDark ? "text-teal-400" : "text-blue-600"}
+          `}
+        >
+          {String(value)}
+        </span>
+      </div>
+    );
   });
 };
 
-export default renderObject
+export default renderObject;

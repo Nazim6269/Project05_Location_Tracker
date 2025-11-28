@@ -1,7 +1,7 @@
 import { addMinutes } from "date-fns";
+import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
 import { TIMEZONE_OFFSET } from "../constants/timezone";
-import PropTypes from "prop-types";
 
 /**
  * useClock is a custom hook that provides date, timezone, and offset based on the given timezone.

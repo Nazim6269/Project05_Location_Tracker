@@ -1,77 +1,90 @@
-import { faGithub, faLinkedin, faTwitter } from "@fortawesome/free-brands-svg-icons";
+import {
+  faGithub,
+  faLinkedin,
+  faTwitter,
+} from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "react-router";
+import { useTheme } from "../../hooks/useTheme";
 
 const Footer = () => {
-  // gets the current year dynamically
-  const currentYear = new Date().getFullYear(); 
+  const { theme } = useTheme();
+
+  const isDark = theme === "dark";
+
+  // THEME BASED STYLES
+  const footerClasses = `
+    ${
+      isDark
+        ? "bg-gray-950 text-white border-gray-700 shadow-2xl"
+        : "bg-white text-gray-800 border-gray-300 shadow-md"
+    }
+    pt-10 pb-6 border-t transition-colors duration-500
+  `;
+
+  const textClass = isDark ? "text-gray-400" : "text-gray-600";
+  const hoverClass = isDark ? "hover:text-teal-500" : "hover:text-indigo-500";
 
   return (
-    <footer className="bg-gray-900 dark:bg-gray-950 text-white pt-10 pb-6 border-t border-gray-700 shadow-2xl">
+    <footer className={footerClasses}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
-        {/* --- Top Section: Brand, Links, Social --- */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 pb-8 border-b border-gray-800">
-          
-          {/* Left - Brand / Logo */}
+        {/* TOP SECTION */}
+        <div
+          className={`grid grid-cols-1 md:grid-cols-3 gap-8 pb-8 border-b ${
+            isDark ? "border-gray-800" : "border-gray-200"
+          }`}
+        >
+          {/* BRAND */}
           <div className="flex flex-col space-y-2 md:items-start items-center">
-            <div className="text-3xl font-extrabold text-teal-400">
-                Zentra
+            <div
+              className={`${
+                isDark
+                  ? "from-blue-500 to-teal-500"
+                  : "from-indigo-500 to-purple-500"
+              } text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r `}
+            >
+              Zentra
             </div>
-            <p className="text-sm text-gray-500">
-                Your world, synchronized.
-            </p>
+            <p className={`text-sm ${textClass}`}>Your world, synchronized.</p>
           </div>
 
-          {/* Center - Navigation Links */}
+          {/* LINKS */}
           <div className="flex justify-center">
             <ul className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-8 text-lg font-medium">
-              <li>
-                <Link 
-                  to="/" 
-                  className="hover:text-blue-400 transition duration-300 block text-center md:text-left"
-                >
-                  Home
-                </Link>
-              </li>
-              <li>
-                <Link 
-                  to="/my-clock" 
-                  className="hover:text-blue-400 transition duration-300 block text-center md:text-left"
-                >
-                  My Clocks
-                </Link>
-              </li>
-              <li>
-                <Link 
-                  to="/world-clocks" 
-                  className="hover:text-blue-400 transition duration-300 block text-center md:text-left"
-                >
-                  World Clocks
-                </Link>
-              </li>
+              {[
+                { label: "Home", to: "/" },
+                { label: "My Clocks", to: "/my-clock" },
+                { label: "World Clocks", to: "/world-clocks" },
+              ].map((item) => (
+                <li key={item.to}>
+                  <Link
+                    to={item.to}
+                    className={`${textClass} ${hoverClass} transition`}
+                  >
+                    {item.label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
-          {/* Right - (Utility Links) */}
-          <div className="flex justify-center md:justify-end space-x-5 text-gray-400 text-2xl">
-            {/* Example Social Icon */}
-            
-            <Link to="#" className="hover:text-teal-400 transition">
-                <FontAwesomeIcon icon={faGithub} />
-            </Link> 
-            <Link to="#" className="hover:text-teal-400 transition">
-                <FontAwesomeIcon icon={faLinkedin} />
-            </Link> <Link to="#" className="hover:text-teal-400 transition">
-                <FontAwesomeIcon icon={faTwitter} />
-            </Link> 
+          {/* SOCIAL */}
+          <div
+            className={`flex justify-center md:justify-end space-x-6 text-2xl ${textClass}`}
+          >
+            {[faGithub, faLinkedin, faTwitter].map((icon, i) => (
+              <Link key={i} to="#" className={hoverClass}>
+                <FontAwesomeIcon icon={icon} />
+              </Link>
+            ))}
           </div>
         </div>
 
-        {/* --- Bottom Section: Copyright --- */}
+        {/* BOTTOM */}
         <div className="mt-6 text-center">
-          <p className="text-sm text-gray-500">
-            © {currentYear} ClockApp. All Rights Reserved. Designed & Developed By NazimUddin.
+          <p className={`text-sm ${textClass}`}>
+            © 2024 TrackingApp. All Rights Reserved. Designed & Developed by
+            NazimUddin.
           </p>
         </div>
       </div>

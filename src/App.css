@@ -1,0 +1,17 @@
+@import "tailwindcss";
+
+@theme {
+  --color-lightPrimaryTextColor: oklch(37.2% 0.044 257.287);
+  --color-lightTextColor: oklch(55.8% 0.288 302.321);
+  --color-darkTextColor: oklch(80% 0.118 184.704);
+  --color-lightPrimaryBg: #faf3fa;
+
+  --color-primary-start: #ead7ff; /* bg-primary-start */
+  --color-primary-end: #d3b8f1; /* bg-primary-end */
+
+  --color-lightGradientTextColor: linear-gradient(
+    180deg,
+    var(--color-primary-start) 0%,
+    var(--color-primary-end) 100%
+  );
+}

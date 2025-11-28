@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 
 const useGeoLocation = () => {
-    const [position,setPosition]=useState();
-    const [error,setError]=useState()
+  const [position, setPosition] = useState();
+  const [error, setError] = useState();
 
-    useEffect(() => {
+  useEffect(() => {
     if (!navigator.geolocation) {
       setError("Geolocation not supported");
       return;
@@ -17,22 +17,21 @@ const useGeoLocation = () => {
           lng: pos.coords.longitude,
           accuracy: pos.coords.accuracy,
         });
-      },//this is success callback which in mandatory
+      }, //this is success callback which in mandatory
       (err) => {
         setError(err.message);
-      },//this is error callback which is optional
+      }, //this is error callback which is optional
       {
         enableHighAccuracy: true,
         maximumAge: 1000,
-        timeout: 9000,
-      }//this is also optional
+        timeout: 7000,
+      } //this is also optional
     );
 
     return () => navigator.geolocation.clearWatch(watchId);
   }, []);
 
   return { position, error };
-  
-}
+};
 
-export default useGeoLocation
+export default useGeoLocation;

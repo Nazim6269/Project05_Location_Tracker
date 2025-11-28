@@ -1,3 +1,5 @@
+import PropTypes from "prop-types";
+
 /* Small stat block */
 const Stat = ({ label, value }) => (
   <div className="bg-white/20 backdrop-blur-lg rounded-xl p-3 text-center">
@@ -6,4 +8,10 @@ const Stat = ({ label, value }) => (
   </div>
 );
 
-export default Stat
+//defining proptypes
+Stat.propTypes = {
+  label: PropTypes.string,
+  value: PropTypes.string,
+};
+
+export default Stat;

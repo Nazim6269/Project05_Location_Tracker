@@ -1,17 +1,9 @@
 import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
 import { TIMEZONE_OFFSET } from "../../../constants/timezone";
+import { useTheme } from "../../../hooks/useTheme";
 import { getOffset } from "../../../utils/timezone";
 
-/**
- * this component is used to crate clock form
- * @param {Object} props
- * @param {Object} props.values - values object with title, timezone and offset property
- * @param {Function} props.handleClock - handleClock funciton acts for state lifting
- * @param {String | boolean} props.title
- * @param {boolean} props.edit
- * @returns {JSX.Element}
- */
 const ClockForm = ({
   values = { title: "", timezone: "GMT", offset: 0 },
   handleClock,
@@ -19,6 +11,8 @@ const ClockForm = ({
   edit = false,
 }) => {
   const [formValues, setFormValues] = useState({ ...values });
+  const { theme } = useTheme();
+  const isDark = theme === "dark";
 
   //handleChange function
   const handleChange = (e) => {
@@ -47,25 +41,29 @@ const ClockForm = ({
     }
   }, [formValues.timezone]);
 
+  const bgLight = "bg-gray-50/60 border border-indigo-200";
+  const bgDark = "bg-gray-800 border border-teal-700";
+
   return (
     <form
       onSubmit={handleSubmit}
-      className="
-        bg-white dark:bg-gray-800 
-        shadow-2xl dark:shadow-black/70 
-        border border-gray-200 dark:border-gray-700
+      className={`
+        ${isDark ? bgDark : bgLight}
+        shadow-2xl 
         rounded-xl 
         p-6 md:p-8 
         max-w-lg mx-auto 
         space-y-6 
         transition-colors duration-300
-      "
+      `}
     >
       {/* Title Input */}
       <div>
         <label
           htmlFor="title"
-          className="block text-sm font-semibold mb-2 text-gray-700 dark:text-gray-300"
+          className={`block text-sm font-semibold mb-2 ${
+            isDark ? "text-gray-300" : "text-gray-700"
+          }`}
         >
           Enter Your Title
         </label>
@@ -74,17 +72,21 @@ const ClockForm = ({
           id="title"
           name="title"
           disabled={!title}
+          value={formValues.title}
           onChange={handleChange}
-          className="
+          className={`
             w-full p-3 
-            border border-gray-300 dark:border-gray-700 
             rounded-lg 
-            text-gray-900 dark:text-white 
-            bg-gray-50 dark:bg-gray-700
-            focus:outline-none focus:ring-2 focus:ring-teal-400 
+            text-gray-900 border
+            ${
+              isDark
+                ? "bg-gray-700 border-gray-700 text-white focus:ring-teal-400"
+                : "bg-gray-50/60 border-gray-200 focus:ring-indigo-400"
+            }
+            focus:outline-none focus:ring-2 
             transition-colors duration-200
-            disabled:bg-gray-200 dark:disabled:bg-gray-900
-          "
+            disabled:bg-gray-200 
+          `}
         />
       </div>
 
@@ -92,7 +94,9 @@ const ClockForm = ({
       <div>
         <label
           htmlFor="timezone"
-          className="block text-sm font-semibold mb-2 text-gray-700 dark:text-gray-300"
+          className={`block text-sm font-semibold mb-2 ${
+            isDark ? "text-gray-300" : "text-gray-700"
+          }`}
         >
           Enter Your Timezone
         </label>
@@ -101,22 +105,23 @@ const ClockForm = ({
           name="timezone"
           value={formValues.timezone}
           onChange={handleChange}
-          className="
-            w-full p-3 
-            border border-gray-300 dark:border-gray-700 
-            rounded-lg 
-            text-gray-900 dark:text-white 
-            bg-gray-50 dark:bg-gray-700
-            focus:outline-none focus:ring-2 focus:ring-teal-400 
+          className={`
+            w-full p-3 rounded-lg 
+            text-gray-900 border
+            ${
+              isDark
+                ? "bg-gray-700 focus:ring-teal-400 text-white"
+                : "bg-gray-50/60 border-gray-200 focus:ring-indigo-400"
+            }
+            focus:outline-none focus:ring-2 
             transition-colors duration-200
-          "
+          `}
         >
-          <option value="UTC">UTC</option>
-          <option value="GMT">GMT</option>
-          <option value="PST">PST</option>
-          <option value="EDT">EDT</option>
-          <option value="BST">BST</option>
-          <option value="MST">MST</option>
+          {["UTC", "GMT", "PST", "EDT", "BST", "MST"].map((tz) => (
+            <option key={tz} value={tz}>
+              {tz}
+            </option>
+          ))}
         </select>
       </div>
 
@@ -125,7 +130,9 @@ const ClockForm = ({
         <div>
           <label
             htmlFor="offset"
-            className="block text-sm font-semibold mb-2 text-gray-700 dark:text-gray-300"
+            className={`block text-sm font-semibold mb-2 ${
+              isDark ? "text-gray-300" : "text-gray-700"
+            }`}
           >
             Enter Your Offset (Hours)
           </label>
@@ -133,15 +140,17 @@ const ClockForm = ({
             name="offset"
             value={formValues.offset / 60}
             onChange={handleChange}
-            className="
-              w-full p-3 
-              border border-gray-300 dark:border-gray-700 
-              rounded-lg 
-              text-gray-900 dark:text-white 
-              bg-gray-50 dark:bg-gray-700
-              focus:outline-none focus:ring-2 focus:ring-teal-400 
+            className={`
+              w-full p-3 rounded-lg
+              text-gray-900 border
+              ${
+                isDark
+                  ? "bg-gray-700 border-gray-700 text-white focus:ring-teal-400"
+                  : "bg-gray-50/60 border-gray-200 focus:ring-indigo-400"
+              }
+              focus:outline-none focus:ring-2 
               transition-colors duration-200
-            "
+            `}
           >
             {getOffset().map((item) => (
               <option key={item} value={item}>
@@ -155,16 +164,18 @@ const ClockForm = ({
       {/* Submit Button*/}
       <button
         type="submit"
-        className="
-          w-full 
-          bg-gradient-to-r from-blue-600 to-teal-500 
-          text-white 
-          font-bold 
-          py-3 
-          rounded-xl 
-          shadow-lg hover:shadow-xl transition-all duration-300 
-          hover:brightness-110
-        "
+        className={` w-full
+    flex-1 text-sm font-semibold py-2 rounded-md
+    transition-all duration-300 select-none
+    text-white
+    bg-gradient-to-r
+    ${
+      isDark
+        ? "from-blue-600 via-cyan-600 to-teal-600 hover:from-blue-500 hover:via-cyan-500 hover:to-teal-500"
+        : "from-blue-500 via-indigo-500 to-purple-500 hover:from-blue-600 hover:via-indigo-600 hover:to-purple-600"
+    }
+     hover:shadow-lg
+  `}
       >
         {edit ? "Update Clock" : "Create Clock"}
       </button>
@@ -172,7 +183,6 @@ const ClockForm = ({
   );
 };
 
-//defining prop types below
 ClockForm.propTypes = {
   values: PropTypes.shape({
     title: PropTypes.string,
@@ -180,7 +190,7 @@ ClockForm.propTypes = {
     offset: PropTypes.number,
   }),
   handleClock: PropTypes.func,
-  title: PropTypes.string || PropTypes.bool,
+  title: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
   edit: PropTypes.bool,
 };
 

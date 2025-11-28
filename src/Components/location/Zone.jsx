@@ -1,67 +1,101 @@
 import PropTypes from "prop-types";
+import { useTheme } from "../../hooks/useTheme";
 import Stat from "./Stat";
 
-const Zone = ({
-  zoneName,
-  status,
-  location,
-  speed,
-  signal,
-  progress,
-}) => {
-  // Professional Dashboard Colors
+const Zone = ({ zoneName, status, location, speed, signal, progress }) => {
+  const { theme } = useTheme();
+  const isDark = theme === "dark";
+
+  // Status gradients (Used only in DARK mode)
   const statusColors = {
     Safe: "from-teal-600 to-green-800",
     Monitoring: "from-yellow-500 to-orange-600",
     Alert: "from-red-600 to-rose-700",
   };
 
+  // Mode-based backgrounds
   const gradient = statusColors[status] || "from-gray-700 to-gray-900";
 
   return (
     <div
-      className={`relative rounded-3xl p-6 bg-gradient-to-br ${gradient} shadow-2xl text-white overflow-hidden hover:scale-105 transition-transform`}
+      className={`relative rounded-3xl p-6 overflow-hidden hover:scale-105 transition-transform duration-300 border
+        ${
+          isDark
+            ? `bg-gradient-to-br ${gradient} text-white shadow-2xl border-white/10`
+            : "bg-white text-gray-900 shadow-lg border-gray-200"
+        }
+      `}
     >
-      {/* Top Glow */}
-      <div className="absolute inset-0 bg-black/20 backdrop-blur-2xl"></div>
+      {/* DARK MODE GLOW */}
+      {isDark && (
+        <div className="absolute inset-0 bg-black/20 backdrop-blur-2xl"></div>
+      )}
 
-      {/* Header */}
+      {/* HEADER */}
       <div className="relative flex justify-between items-center">
         <h2 className="text-lg font-bold tracking-wide">{zoneName}</h2>
-        <span className="px-3 py-1 text-xs rounded-full bg-black/30 backdrop-blur-xl">
+
+        <span
+          className={`px-3 py-1 text-xs rounded-full font-medium
+            ${isDark ? "bg-black/30 text-white" : "bg-gray-100 text-gray-700"}
+          `}
+        >
           {status}
         </span>
       </div>
 
-      {/* Location */}
-      <p className="relative mt-2 text-sm opacity-80">📍 {location}</p>
+      {/* LOCATION */}
+      <p
+        className={`relative mt-2 text-sm
+          ${isDark ? "text-gray-200" : "text-gray-600"}
+        `}
+      >
+        📍 {location}
+      </p>
 
-      {/* Stats */}
+      {/* STATS */}
       <div className="relative grid grid-cols-3 gap-4 mt-5">
-        <Stat label="Speed" value={`${speed} km/h`} dark />
-        <Stat label="Signal" value={`${signal}%`} dark />
-        <Stat label="Zone" value={status} dark />
+        <Stat label="Speed" value={`${speed} km/h`} dark={isDark} />
+        <Stat label="Signal" value={`${signal}%`} dark={isDark} />
+        <Stat label="Zone" value={status} dark={isDark} />
       </div>
 
-      {/* Progress Bar */}
+      {/* PROGRESS */}
       <div className="relative mt-6">
-        <p className="text-xs opacity-70 mb-1">Zone Progress</p>
-        <div className="w-full h-2 bg-black/30 rounded-full overflow-hidden">
+        <p
+          className={`text-xs mb-1
+            ${isDark ? "text-gray-200" : "text-gray-600"}
+          `}
+        >
+          Zone Progress
+        </p>
+
+        <div
+          className={`
+            w-full h-2 rounded-full overflow-hidden
+            ${isDark ? "bg-black/30" : "bg-gray-200"}
+          `}
+        >
           <div
-            className="h-full bg-white/70 transition-all"
+            className={`h-full transition-all
+              ${isDark ? "bg-white/70" : "bg-blue-600"}
+            `}
             style={{ width: `${progress}%` }}
           />
         </div>
       </div>
 
-      {/* Decorative Radar Ring */}
-      <div className="absolute -bottom-10 -right-10 w-36 h-36 rounded-full border border-white/20 animate-pulse"></div>
-      <div className="absolute -bottom-16 -right-16 w-52 h-52 rounded-full border border-white/10 animate-pulse"></div>
+      {/* RADAR RINGS (DARK ONLY) */}
+      {isDark && (
+        <>
+          <div className="absolute -bottom-10 -right-10 w-36 h-36 rounded-full border border-white/20 animate-pulse"></div>
+          <div className="absolute -bottom-16 -right-16 w-52 h-52 rounded-full border border-white/10 animate-pulse"></div>
+        </>
+      )}
     </div>
   );
 };
 
-// PropTypes
 Zone.propTypes = {
   zoneName: PropTypes.string.isRequired,
   status: PropTypes.oneOf(["Safe", "Monitoring", "Alert"]).isRequired,

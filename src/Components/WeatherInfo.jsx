@@ -1,25 +1,26 @@
 import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
+import { useTheme } from "../hooks/useTheme";
 import ErrorCard from "./ErrorCard";
 import { Info } from "./Info";
 import LoadingCard from "./LoadingCard";
+const weatherApi = import.meta.env.VITE_WEATHER_API_KEY;
 
-
-
-
-const WeatherInfo = ({city}) => {
- const [data, setData] = useState(null);
+const WeatherInfo = ({ city }) => {
+  const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const { theme } = useTheme();
+  const isDark = theme === "dark";
+
   useEffect(() => {
     async function getWeather() {
       try {
         setLoading(true);
         setError("");
-        const API_KEY = '59b035978079d5cae0be0afcae8e6911';
 
         const res = await fetch(
-          `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${API_KEY}`
+          `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${weatherApi}`
         );
 
         if (!res.ok) throw new Error("Failed to fetch weather data");
@@ -48,14 +49,26 @@ const WeatherInfo = ({city}) => {
     getWeather();
   }, [city]);
 
-const formatTime = (unix) =>
-    new Date(unix * 1000).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+  const formatTime = (unix) =>
+    new Date(unix * 1000).toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
 
-    if (loading) return <LoadingCard />;
+  if (loading) return <LoadingCard />;
   if (error) return <ErrorCard message={error} />;
-  return (
-    <div className="bg-gradient-to-br from-sky-400 via-indigo-500 to-purple-600 dark:from-gray-800 dark:via-gray-900 dark:to-black rounded-3xl shadow-2xl p-6 w-full max-w-sm text-white space-y-4 hover:scale-105 transition">
 
+  return (
+    <div
+      className={`
+    rounded-3xl p-6 w-full max-w-sm space-y-4 transition-transform hover:scale-105
+    ${
+      isDark
+        ? "bg-gray-800 text-white shadow-xl shadow-black/40"
+        : "bg-gradient-to-br from-pink-50 via-purple-50 to-indigo-50 text-gray-800 shadow-xl shadow-gray-300"
+    }
+  `}
+    >
       {/* Header */}
       <div className="flex justify-between items-center">
         <h2 className="text-lg font-semibold">{city}</h2>
@@ -66,12 +79,22 @@ const formatTime = (unix) =>
         />
       </div>
 
-      {/* Temp */}
-      <p className="text-5xl font-bold">{data.temp}°</p>
-      <p className="text-sm opacity-80">Feels like {data.feels_like}°</p>
+      {/* Temperature */}
+      <p
+        className={`${
+          isDark ? "text-darkTextColor" : "text-lightTextColor"
+        } text-4xl font-bold`}
+      >
+        {data.temp}°
+      </p>
+      <p className="text-sm opacity-70">Feels like {data.feels_like}°</p>
 
       {/* Condition */}
-      <span className="inline-block bg-white/20 px-3 py-1 rounded-full text-sm">
+      <span
+        className={`inline-block px-3 py-1 rounded-full text-sm ${
+          theme === "dark" ? "bg-gray-700" : "bg-white/70"
+        }`}
+      >
         {data.condition}
       </span>
 
@@ -84,18 +107,16 @@ const formatTime = (unix) =>
       </div>
 
       {/* Sunrise / Sunset */}
-      <div className="flex justify-between text-xs opacity-80 mt-4">
+      <div className="flex justify-between text-xs opacity-70 mt-4">
         <span>🌅 {formatTime(data.sunrise)}</span>
         <span>🌇 {formatTime(data.sunset)}</span>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default WeatherInfo
+WeatherInfo.propTypes = {
+  city: PropTypes.string,
+};
 
-
-//defining proptypes
-WeatherInfo.propTypes={
-city:PropTypes.string
-}
+export default WeatherInfo;
