@@ -43,11 +43,11 @@ export default function LiveTracker() {
   /* ---------- MAIN UI ---------- */
   return (
     <div
-      className={`relative overflow-hidden rounded-3xl p-6 w-auto md:w-[380px] border backdrop-blur-xl transition-colors duration-500
+      className={`relative overflow-hidden rounded-3xl p-6 w-auto md:w-[380px] backdrop-blur-xl transition-colors duration-500
         ${
           isDark
-            ? "bg-gray-900 text-white border-gray-700 shadow-2xl shadow-black/70"
-            : "bg-white text-gray-900 border-gray-200 shadow-lg shadow-gray-300/40"
+            ? "bg-gray-800 text-white shadow-xl shadow-black/40"
+            : "bg-gradient-to-br from-pink-50 via-purple-50 to-indigo-50 text-gray-800 shadow-xl shadow-gray-300"
         }
       `}
     >
@@ -62,12 +62,12 @@ export default function LiveTracker() {
       <div className="flex items-center gap-3 mb-4">
         <div
           className={`w-3 h-3 rounded-full animate-pulse ${
-            isDark ? "bg-teal-500" : "bg-blue-500"
+            isDark ? "bg-darkTextColor" : "bg-lightTextColor"
           }`}
         ></div>
         <h3
           className={`font-semibold tracking-widest text-sm uppercase
-            ${isDark ? "text-teal-400" : "text-blue-600"}
+            ${isDark ? "text-darkTextColor" : "text-lightTextColor"}
           `}
         >
           Live Tracking

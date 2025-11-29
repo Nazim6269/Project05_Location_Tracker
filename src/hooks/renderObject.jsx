@@ -30,7 +30,7 @@ const renderObject = (obj, isDark) => {
 
         <span
           className={`font-mono font-semibold
-            ${isDark ? "text-teal-400" : "text-blue-600"}
+            ${isDark ? "text-darkTextColor" : "text-lightTextColor"}
           `}
         >
           {String(value)}

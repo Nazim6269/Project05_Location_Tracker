@@ -6,7 +6,7 @@ const Zone = ({ zoneName, status, location, speed, signal, progress }) => {
   const { theme } = useTheme();
   const isDark = theme === "dark";
 
-  // Status gradients (Used only in DARK mode)
+  // Status gradients ()
   const statusColors = {
     Safe: "from-teal-600 to-green-800",
     Monitoring: "from-yellow-500 to-orange-600",
@@ -18,13 +18,7 @@ const Zone = ({ zoneName, status, location, speed, signal, progress }) => {
 
   return (
     <div
-      className={`relative rounded-3xl p-6 overflow-hidden hover:scale-105 transition-transform duration-300 border
-        ${
-          isDark
-            ? `bg-gradient-to-br ${gradient} text-white shadow-2xl border-white/10`
-            : "bg-white text-gray-900 shadow-lg border-gray-200"
-        }
-      `}
+      className={`relative rounded-3xl p-6 overflow-hidden hover:scale-105 transition-transform duration-300 border bg-gradient-to-br ${gradient} text-white shadow-2xl border-white/10`}
     >
       {/* DARK MODE GLOW */}
       {isDark && (

@@ -23,11 +23,11 @@ const Alerts = ({ alerts }) => {
 
   return (
     <div
-      className={`rounded-3xl p-5 border transition-colors duration-300
+      className={`rounded-3xl p-5 transition-colors duration-300
         ${
           isDark
-            ? "bg-gray-900 shadow-2xl shadow-black/70 border-gray-700/30 text-white"
-            : "bg-white shadow-lg shadow-gray-300/40 border-gray-200 text-gray-900"
+            ? "bg-gray-800 text-white shadow-xl shadow-black/40"
+            : "bg-gradient-to-br from-pink-50 via-purple-50 to-indigo-50 text-gray-800 shadow-xl shadow-gray-300"
         }
       `}
     >

@@ -16,11 +16,11 @@ const AnalyticStats = () => {
       {stats.map((item, i) => (
         <div
           key={i}
-          className={`rounded-2xl p-4 text-center border transition-colors duration-300
+          className={`rounded-2xl p-4 text-center transition-colors duration-300
             ${
               isDark
-                ? "bg-gray-900 border-gray-700/30 text-teal-400 shadow-2xl shadow-black/70"
-                : "bg-white border-gray-200 text-blue-600 shadow-lg shadow-gray-300/40"
+                ? "bg-gray-800 text-white shadow-xl shadow-black/40"
+                : "bg-gradient-to-br from-pink-50 via-purple-50 to-indigo-50 text-gray-800 shadow-xl shadow-gray-300"
             }
           `}
         >
@@ -33,7 +33,7 @@ const AnalyticStats = () => {
           </p>
           <h2
             className={`text-2xl font-bold ${
-              isDark ? "text-white" : "text-gray-900"
+              isDark ? "text-darkTextColor" : "text-lightTextColor"
             }`}
           >
             {item.value}
